@@ -11,5 +11,9 @@ export const Home = () => (
 		<a href="#" className="btn btn-success">
 			If you see this green button, bootstrap is working
 		</a>
+		<a href="/contact" className="btn btn-success">
+			Contact uwu
+		</a>
 	</div>
+
 );
