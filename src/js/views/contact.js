@@ -7,25 +7,36 @@ import "../../styles/demo.css";
 
 export const Contact = () => {
 	const { store, actions } = useContext(Context);
-    const [contactList, setContactList] = useState( []); 
-    async function getContacts() {
-    const response = await fetch("https://swapi.dev/api/people")
-    const apiContact = await response.json();
-    setContactList (apiContact.results)
-    }
-    useEffect (() => {
-        getContacts();
-    }, [])
+	const [contactList, setContactList] = useState([]);
+	const [agendaName, setAgendaName] = useState("");
+
+	async function getContacts(name) {
+		const response = await fetch(`https://playground.4geeks.com/contact/agendas/${name}/contacts`)
+		const data = await response.json();
+		setContactList(data.contacts)
+	}
+	useEffect(() => {
+		getContacts();
+	}, [])
+
+	let handlerGetAgenda = async (e) => {
+		setAgendaName(e.target.value)
+		await getContacts(e.target.value)
+	}
 
 	return (
 		<div className="container">
+			<div>
+				<p> Busca tu agenda </p>
+				<input type="text" onChange={handlerGetAgenda} />
+			</div>
 			<ul className="list-group">
-				{contactList.map((contact, index) => {
+				{contactList && contactList.map((contact, index) => {
 					return (
 						<li
 							key={index}
 							className="list-group-item d-flex justify-content-between">
-                                {contact.name}
+							{contact.name}
 							<button className="btn btn-success">
 								Delete contact
 							</button>
@@ -34,7 +45,7 @@ export const Contact = () => {
 				})}
 			</ul>
 			<br />
-            <Link to="/addContact">
+			<Link to="/addContact">
 				<button className="btn btn-primary">Add new contact</button>
 			</Link>
 			<Link to="/">
